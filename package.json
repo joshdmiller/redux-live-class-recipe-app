@@ -1,7 +1,7 @@
 {
-  "name": "react-redux-boilerplate",
+  "name": "redux-live-class-recipe-app",
   "version": "1.0.0",
-  "description": "A minimalist boilerplate for modern react and redux apps.",
+  "description": "An MVP of a React+Redux-based Recipe management app for a live class.",
   "scripts": {
     "start": "NODE_ENV=development node server.js",
     "test": "tape -r babel-register 'src/**/*spec.js' | faucet",
@@ -20,14 +20,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/joshdmiller/react-redux-boilerplate.git"
+    "url": "https://github.com/joshdmiller/redux-live-class-recipe-app.git"
   },
   "author": "Josh David Miller <josh@joshdavidmiller.com> (http://joshdavidmiller.com)",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/joshdmiller/react-redux-boilerplate/issues"
+    "url": "https://github.com/joshdmiller/redux-live-class-recipe-app/issues"
   },
-  "homepage": "https://github.com/joshdmiller/react-redux-boilerplate",
+  "homepage": "https://github.com/joshdmiller/redux-live-class-recipe-app",
   "devDependencies": {
     "babel-core": "^6.0.20",
     "babel-eslint": "^4.1.3",
