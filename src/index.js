@@ -9,6 +9,7 @@ ReactDOM.render(
   document.getElementById( 'app' )
 );
 
+/* istanbul ignore next */
 if ( module.hot ) {
   module.hot.accept( './components/app', () => {
     require( './components/app' );

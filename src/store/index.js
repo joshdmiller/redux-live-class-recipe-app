@@ -14,6 +14,7 @@ const middleware = applyMiddleware(
 
 const store = createStore( reducers, initialState, middleware );
 
+/* istanbul ignore next */
 if ( module.hot ) {
   module.hot.accept( './reducers', () => {
     const nextRootReducer = require( './reducers' ).default;
