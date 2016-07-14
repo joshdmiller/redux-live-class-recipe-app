@@ -23,5 +23,9 @@ if ( module.hot ) {
   })
 }
 
+if ( global.window ) {
+  global.window.store = store;
+}
+
 export default store;
 
