@@ -2,8 +2,9 @@ import React from 'react';
 import { Provider } from 'react-redux';
 import injectTapEventPlugin from 'react-tap-event-plugin';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import AppBar from 'material-ui/AppBar';
+import { Router, Route, IndexRoute, hashHistory } from 'react-router';
 
+import Main from '../main';
 import RecipeList from '../recipe-list';
 import store from '../../store';
 
@@ -15,12 +16,11 @@ export default () => {
   return (
     <Provider store={store}>
       <MuiThemeProvider>
-        <div>
-          <AppBar
-            title="Alfred"
-          />
-          <RecipeList />
-        </div>
+        <Router history={hashHistory}>
+          <Route path="/" component={Main}>
+            <IndexRoute component={RecipeList} />
+          </Route>
+        </Router>
       </MuiThemeProvider>
     </Provider>
   );
