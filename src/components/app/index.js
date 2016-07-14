@@ -2,7 +2,8 @@ import React from 'react';
 import { Provider } from 'react-redux';
 import injectTapEventPlugin from 'react-tap-event-plugin';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import { Router, Route, IndexRoute, hashHistory } from 'react-router';
+import { Router, Route, IndexRoute, hashHistory, createMemoryHistory } from 'react-router';
+import { syncHistoryWithStore } from 'react-router-redux';
 
 import Main from '../main';
 import RecipeList from '../recipe-list';
@@ -12,11 +13,13 @@ import store from '../../store';
 // http://stackoverflow.com/a/34015469/988941
 injectTapEventPlugin();
 
+const history = syncHistoryWithStore( global.window ? hashHistory : createMemoryHistory(), store );
+
 export default () => {
   return (
     <Provider store={store}>
       <MuiThemeProvider>
-        <Router history={hashHistory}>
+        <Router history={history}>
           <Route path="/" component={Main}>
             <IndexRoute component={RecipeList} />
           </Route>
