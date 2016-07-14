@@ -5,7 +5,7 @@ import { Provider } from 'react-redux';
 import AppBar from 'material-ui/AppBar';
 
 import App from './';
-import Greeting from '../greeting';
+import RecipeList from '../recipe-list';
 
 test( 'App', t => {
   let expected, actual;
@@ -18,9 +18,9 @@ test( 'App', t => {
   t.ok( actual === expected, 'renders a React/Redux Provider' );
 
   expected = 1;
-  actual = wrapper.find( Greeting ).length;
+  actual = wrapper.find( RecipeList ).length;
 
-  t.equals( actual, expected, 'renders a Greeting component' );
+  t.equals( actual, expected, 'renders a RecipeList component' );
 
   expected = 1;
   actual = wrapper.find( AppBar ).length;
