@@ -2,12 +2,13 @@ import { createStore, applyMiddleware } from 'redux';
 import createLogger from 'redux-logger';
 
 import reducers from './reducers';
+import data from '../static-data';
 
 const logger = createLogger({
   collapsed: true,
 });
 
-const initialState = {};
+const initialState = data;
 const middleware = applyMiddleware(
   logger
 );

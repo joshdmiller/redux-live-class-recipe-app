@@ -3,7 +3,7 @@ import test from 'tape';
 import { shallow } from 'enzyme';
 import {List, ListItem} from 'material-ui/List';
 
-import RecipeList from './';
+import { RecipeList } from './';
 
 test( 'RecipeList', t => {
   let expected, actual;

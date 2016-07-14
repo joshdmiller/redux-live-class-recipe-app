@@ -6,7 +6,6 @@ import AppBar from 'material-ui/AppBar';
 
 import RecipeList from '../recipe-list';
 import store from '../../store';
-import data from '../../static-data';
 
 // dirty hack because material-ui requires a custom event type
 // http://stackoverflow.com/a/34015469/988941
@@ -20,7 +19,7 @@ export default () => {
           <AppBar
             title="Alfred"
           />
-          <RecipeList recipes={data.recipes} />
+          <RecipeList />
         </div>
       </MuiThemeProvider>
     </Provider>

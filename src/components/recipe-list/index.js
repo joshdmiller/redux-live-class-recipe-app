@@ -1,11 +1,12 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import {List, ListItem} from 'material-ui/List';
 import Divider from 'material-ui/Divider';
 import Avatar from 'material-ui/Avatar';
 
 import ViewListIcon from 'material-ui/svg-icons/action/view-list';
 
-export default ({ recipes = [] }) => {
+export const RecipeList = ({ recipes = [] }) => {
   return (
     <List>
       { recipes.map( recipe => 
@@ -19,4 +20,8 @@ export default ({ recipes = [] }) => {
     </List>
   );
 }
+
+const mapStateToProps = ({ recipes }) => ({ recipes });
+
+export default connect( mapStateToProps )( RecipeList );
 
