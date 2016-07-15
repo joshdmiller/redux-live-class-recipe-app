@@ -17,6 +17,24 @@ export default {
       name: 'Roasted Habanero Salsa',
       slug: 'roasted-habanero-salsa',
       description: 'Spicy, fruity hot sauce made from habanero chiles.',
+      ingredients: [
+        {
+          qty: 10,
+          name: 'habanero chiles',
+        },
+        {
+          qty: 2,
+          name: 'garlic cloves, unpeeled',
+        },
+        {
+          qty: 2,
+          unit: 'tablespoons',
+          name: 'sour orange juice',
+        },
+        {
+          name: 'salt',
+        },
+      ],
     },
     {
       id: '4',
