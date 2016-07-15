@@ -7,6 +7,7 @@ import { syncHistoryWithStore } from 'react-router-redux';
 
 import Main from '../main';
 import RecipeList from '../recipe-list';
+import Recipe from '../recipe';
 import store from '../../store';
 
 // dirty hack because material-ui requires a custom event type
@@ -22,6 +23,12 @@ export default () => {
         <Router history={history}>
           <Route path="/" component={Main}>
             <IndexRoute component={RecipeList} />
+
+            <Route path="/recipes">
+              <IndexRoute component={RecipeList} />
+
+              <Route path=":id/:slug" component={Recipe} />
+            </Route>
           </Route>
         </Router>
       </MuiThemeProvider>
