@@ -1,26 +1,41 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
+import fetchRecipe from '../../store/actions/fetch-recipe';
 import IngredientList from '../ingredient-list';
 
-export const Recipe = ({
-  name,
-  description,
-  ingredients = [],
-}) => (
-  <div>
-    <h1>{name}</h1>
-    <p>
-      {description}
-    </p>
+export class Recipe extends React.Component {
+  componentDidMount () {
+    this.props.fetch( this.props.params.id );
+  }
 
-    <IngredientList ingredients={ingredients} />
-  </div>
-);
+  render () {
+    const {
+      name,
+      description,
+      ingredients = [],
+    } = this.props;
+
+    return (
+      <div>
+        <h1>{name}</h1>
+        <p>
+          {description}
+        </p>
+
+        <IngredientList ingredients={ingredients} />
+      </div>
+    );
+  }
+}
 
 const mapStateToProps = ({ recipes, }, { params: { id } }) => ({
   ...( recipes.find( r => r.id === id ) || {} ),
 });
 
-export default connect( mapStateToProps )( Recipe );
+const mapDispatchToProps = dispatch => ({
+  fetch: id => dispatch( fetchRecipe( id ) ),
+});
+
+export default connect( mapStateToProps, mapDispatchToProps )( Recipe );
 

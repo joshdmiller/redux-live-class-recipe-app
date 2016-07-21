@@ -4,9 +4,9 @@ import test from 'tape';
 import reducer from './recipes';
 import createRecipe from '../actions/create-recipe';
 
-test( 'recipes reducer: ADD_RECIPE', t => {
+test( 'recipes reducer', t => {
   let expected, actual;
-  t.plan( 5 );
+  t.plan( 6 );
 
   const initialState = [ { id: 1 }, { id: 2, }, { id: 3 } ];
   const name = 'New Recipe';
@@ -18,17 +18,21 @@ test( 'recipes reducer: ADD_RECIPE', t => {
 
   expected = initialState.length + 1;
   actual = newState.length;
-  t.equal( actual, expected, 'should add the recipe to the array' );
+  t.equal( actual, expected, 'ADD_RECIPE should add the recipe to the array' );
 
   const newRecipe = newState[ newState.length - 1 ];
 
   expected = name;
   actual = newRecipe.name;
-  t.deepEqual( actual, expected, 'should store the provided name' )
+  t.deepEqual( actual, expected, 'ADD_RECIPE should store the provided name' )
 
   expected = description;
   actual = newRecipe.description;
-  t.deepEqual( actual, expected, 'should store the provided description' )
+  t.deepEqual( actual, expected, 'ADD_RECIPE should store the provided description' )
+
+  expected = [ ...initialState ];
+  actual = reducer( initialState, { type: 'LOAD_RECIPES', recipes: expected });
+  t.deepEqual( actual, expected, 'LOAD_RECIPES should replace the recipes' );
 });
 
 

@@ -1,18 +1,17 @@
 import { createStore, applyMiddleware } from 'redux';
 import createLogger from 'redux-logger';
+import thunk from 'redux-thunk';
 
 import reducers from './reducers';
-import data from '../static-data';
-import { dehydrate, rehydrate } from './persist';
 
 const logger = createLogger({
   collapsed: true,
 });
 
-const initialState = rehydrate( data );
+const initialState = { recipes: [] };
 const middleware = applyMiddleware(
-  logger,
-  dehydrate
+  thunk,
+  logger
 );
 
 const store = createStore( reducers, initialState, middleware );
