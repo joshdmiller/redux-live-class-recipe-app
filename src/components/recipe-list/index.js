@@ -6,8 +6,14 @@ import Avatar from 'material-ui/Avatar';
 import { Link } from 'react-router';
 import io from 'socket.io-client';
 import ViewListIcon from 'material-ui/svg-icons/action/view-list';
+import { grey400 } from 'material-ui/styles/colors';
+import IconButton from 'material-ui/IconButton';
+import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
+import IconMenu from 'material-ui/IconMenu';
+import MenuItem from 'material-ui/MenuItem';
 
 import fetchRecipes from '../../store/actions/fetch-recipes';
+import deleteRecipe from '../../store/actions/delete-recipe';
 import { addRecipe } from '../../store/actions/create-recipe';
 
 export class RecipeList extends React.Component {
@@ -30,6 +36,24 @@ export class RecipeList extends React.Component {
       recipes = [],
     } = this.props;
 
+    const createSecondaryActionMenu = recipe => {
+      const iconButton = (
+        <IconButton touch={true} tooltip="actions" tooltipPosition="bottom-left">
+          <MoreVertIcon color={grey400} />
+        </IconButton>
+      );
+
+      return (
+        <IconMenu iconButtonElement={iconButton}>
+          <MenuItem onTouchTap={() => this.props.remove( recipe.id )}>
+            Delete
+          </MenuItem>
+        </IconMenu>
+      );
+    };
+
+    const go = r => this.context.router.push({ pathname: `/recipes/${r.id}/${r.slug}` });
+
     return (
       <List>
         { recipes.map( recipe => 
@@ -38,7 +62,8 @@ export class RecipeList extends React.Component {
             leftAvatar={<Avatar icon={<ViewListIcon />} />}
             primaryText={recipe.name}
             secondaryText={recipe.description}
-            containerElement={<Link to={`/recipes/${recipe.id}/${recipe.slug}`} />}
+            onTouchTap={() => go( recipe )}
+            rightIconButton={createSecondaryActionMenu( recipe )}
           />
         )}
       </List>
@@ -46,11 +71,16 @@ export class RecipeList extends React.Component {
   }
 }
 
+RecipeList.contextTypes = {
+  router: React.PropTypes.object,
+};
+
 const mapStateToProps = ({ recipes }) => ({ recipes });
 
 const mapDispatchToProps = dispatch => ({
   refresh: () => dispatch( fetchRecipes() ),
   add: recipe => dispatch( addRecipe( recipe ) ),
+  remove: id => dispatch( deleteRecipe( id ) ),
 });
 
 export default connect( mapStateToProps, mapDispatchToProps )( RecipeList );

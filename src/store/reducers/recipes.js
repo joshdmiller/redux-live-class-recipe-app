@@ -4,6 +4,8 @@ export default ( recipes = [], { type, ...payload } ) => {
       return [ ...recipes, payload ];
     case 'LOAD_RECIPES':
       return [ ...payload.recipes ];
+    case 'DELETE_RECIPE':
+      return recipes.filter( recipe => recipe.id !== payload.id );
   }
 
   return recipes;
