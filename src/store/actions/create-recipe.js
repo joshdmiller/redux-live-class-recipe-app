@@ -1,9 +1,7 @@
 import shortid from 'shortid';
 
-export default ( name, description ) => ({
+export const addRecipe = recipe => ({
   type: 'ADD_RECIPE',
-  id: shortid.generate(),
-  name,
-  description,
+  ...recipe,
 });
 

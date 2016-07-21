@@ -2,7 +2,7 @@ import React from 'react';
 import test from 'tape';
 
 import reducer from './recipes';
-import createRecipe from '../actions/create-recipe';
+import { addRecipe } from '../actions/create-recipe';
 
 test( 'recipes reducer', t => {
   let expected, actual;
@@ -11,7 +11,7 @@ test( 'recipes reducer', t => {
   const initialState = [ { id: 1 }, { id: 2, }, { id: 3 } ];
   const name = 'New Recipe';
   const description = 'An interesting food.';
-  const newState = reducer( initialState, createRecipe( name, description ) );
+  const newState = reducer( initialState, addRecipe({ name, description }) );
 
   t.ok( newState !== initialState, 'should return a new state' );
   t.ok( Array.isArray( newState ), 'should return an array' );

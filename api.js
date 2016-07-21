@@ -1,7 +1,9 @@
+import { Server } from 'http';
 import express from 'express';
 import shortid from 'shortid';
 import bodyParser from 'body-parser';
 import cors from 'cors';
+import socketio from 'socket.io';
 
 import data from './src/static-data';
 
@@ -17,6 +19,8 @@ const sluggify = text => text.toString().toLowerCase()
   ;
 
 const app = express();
+const http = Server( app );
+const io = socketio( http );
 
 app.use( cors() );
 app.use( bodyParser.json() );
@@ -39,6 +43,8 @@ app.post( '/recipes', ( { body }, res ) => {
   };
 
   data.recipes.push( recipe );
+
+  io.emit( 'NEW_RECIPE', recipe );
 
   res.status( 200 ).json( recipe );
 });
@@ -74,6 +80,8 @@ app.put( '/recipes/:recipe_id', ( { params: { recipe_id }, body }, res ) => {
   };
 
   res.status( 200 ).json( recipe );
+
+  // TODO: emit a change notification on the websocket
 });
 
 /**
@@ -89,7 +97,9 @@ app.delete( '/recipes/:recipe_id', ( { params: { recipe_id } }, res ) => {
   data.recipes = data.recipes.filter( r => r !== recipe );
 
   res.status( 200 ).json( reply( 200, 'Recipe deleted' ) );
+
+  // TODO: emit a change notification on the websocket
 });
 
-app.listen( 3000, () => console.log( 'API listening on port 3000' ) );
+http.listen( 3000, () => console.log( 'API listening on port 3000' ) );
 
