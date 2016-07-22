@@ -3,7 +3,7 @@ export default ( recipes = [], { type, ...payload } ) => {
     case 'ADD_RECIPE':
       return [ ...recipes, payload ];
     case 'LOAD_RECIPES':
-      return [ ...payload.recipes ];
+      return [ ...payload.payload ];
     case 'DELETE_RECIPE':
       return recipes.filter( recipe => recipe.id !== payload.id );
   }

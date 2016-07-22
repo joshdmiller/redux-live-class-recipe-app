@@ -1,24 +1,14 @@
-import FetchPolyfill from 'whatwg-fetch';
+import { CALL_API } from 'redux-api-middleware';
 
-export default () => dispatch => {
-  dispatch({ type: 'FETCH_RECIPES_START' });
-
-  return fetch( 'http://localhost:3000/recipes' )
-    .then( res => {
-      if ( res.status < 200 || res.status >= 300 ) {
-        throw new Error();
-      }
-
-      return res.json();
-    })
-    .then( recipes => {
-      dispatch({
-        type: 'LOAD_RECIPES',
-        recipes
-      });
-    })
-    .catch( () => {
-      dispatch({ type: 'FETCH_RECIPES_ERROR' });
-    });
-};
+export default () => ({
+  [ CALL_API ]: {
+    endpoint: 'http://localhost:3000/recipes',
+    method: 'GET',
+    types: [
+      'FETCH_RECIPES_START',
+      'LOAD_RECIPES',
+      'FETCH_RECIPES_ERROR',
+    ],
+  },
+});
 

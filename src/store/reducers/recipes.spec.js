@@ -31,7 +31,7 @@ test( 'recipes reducer', t => {
   t.deepEqual( actual, expected, 'ADD_RECIPE should store the provided description' )
 
   expected = [ ...initialState ];
-  actual = reducer( initialState, { type: 'LOAD_RECIPES', recipes: expected });
+  actual = reducer( initialState, { type: 'LOAD_RECIPES', payload: expected } );
   t.deepEqual( actual, expected, 'LOAD_RECIPES should replace the recipes' );
 
   newState = reducer( initialState, { type: 'DELETE_RECIPE', id: '1' } );
