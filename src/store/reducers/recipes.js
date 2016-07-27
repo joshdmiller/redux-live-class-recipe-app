@@ -1,11 +1,13 @@
-export default ( recipes = [], { type, ...payload } ) => {
+import { List } from 'immutable';
+
+export default ( recipes = new List(), { type, ...payload } ) => {
   switch ( type ) {
     case 'ADD_RECIPE':
-      return [ ...recipes, payload ];
+      return recipes.push( payload );
     case 'LOAD_RECIPES':
-      return [ ...payload.payload ];
+      return new List( payload.payload );
     case 'DELETE_RECIPE':
-      return recipes.filter( recipe => recipe.id !== payload.id );
+      return recipes.filterNot( recipe => recipe.id === payload.id );
   }
 
   return recipes;

@@ -2,6 +2,7 @@ import { createStore, applyMiddleware } from 'redux';
 import createLogger from 'redux-logger';
 import thunk from 'redux-thunk';
 import { apiMiddleware } from 'redux-api-middleware';
+import { List } from 'immutable';
 
 import reducers from './reducers';
 
@@ -9,7 +10,7 @@ const logger = createLogger({
   collapsed: true,
 });
 
-const initialState = { recipes: [] };
+const initialState = { recipes: new List() };
 const middleware = applyMiddleware(
   thunk,
   apiMiddleware,
