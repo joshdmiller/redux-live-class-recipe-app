@@ -1,11 +1,11 @@
-import { List } from 'immutable';
+import { Map, List, fromJS } from 'immutable';
 
-export default ( recipes = new List(), { type, ...payload } ) => {
+export default ( recipes = List(), { type, ...payload } ) => {
   switch ( type ) {
     case 'ADD_RECIPE':
-      return recipes.push( payload );
+      return recipes.push( Map( payload ) );
     case 'LOAD_RECIPES':
-      return new List( payload.payload );
+      return fromJS( payload.payload );
     case 'DELETE_RECIPE':
       return recipes.filterNot( recipe => recipe.id === payload.id );
   }

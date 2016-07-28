@@ -45,23 +45,23 @@ export class RecipeList extends React.Component {
 
       return (
         <IconMenu iconButtonElement={iconButton}>
-          <MenuItem onTouchTap={() => this.props.remove( recipe.id )}>
+          <MenuItem onTouchTap={() => this.props.remove( recipe.get( 'id' ) )}>
             Delete
           </MenuItem>
         </IconMenu>
       );
     };
 
-    const go = r => this.context.router.push({ pathname: `/recipes/${r.id}/${r.slug}` });
+    const go = r => this.context.router.push({ pathname: `/recipes/${r.get( 'id' )}/${r.get( 'slug' )}` });
 
     return (
       <List>
-        { recipes.map( recipe => 
+        { recipes.map( recipe =>
           <ListItem
-            key={recipe.id}
+            key={recipe}
             leftAvatar={<Avatar icon={<ViewListIcon />} />}
-            primaryText={recipe.name}
-            secondaryText={recipe.description}
+            primaryText={recipe.get( 'name' )}
+            secondaryText={recipe.get( 'description' )}
             onTouchTap={() => go( recipe )}
             rightIconButton={createSecondaryActionMenu( recipe )}
           />

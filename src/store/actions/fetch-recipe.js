@@ -2,7 +2,7 @@ import FetchPolyfill from 'whatwg-fetch';
 
 export default id => ( dispatch, getState ) => {
   const recipes = getState().recipes;
-  const recipe = recipes.find( r => r.id === id );
+  const recipe = recipes.find( r => r.get( 'id' ) === id );
 
   // If this recipe is already in our store, we're not going to re-load it over the wire.
   if ( recipe ) {
