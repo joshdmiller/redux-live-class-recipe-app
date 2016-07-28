@@ -5,6 +5,14 @@ import bodyParser from 'body-parser';
 import cors from 'cors';
 import socketio from 'socket.io';
 
+import React from 'react';
+import { Provider } from 'react-redux';
+import { renderToString } from 'react-dom/server';
+import { RouterContext, match } from 'react-router';
+import createLocation from 'history/lib/createLocation';
+
+import routes from '../routes';
+import createStore from '../store';
 import data from '../static-data';
 
 const reply = ( status, message ) => ({ status, message });
@@ -104,23 +112,55 @@ app.delete( '/recipes/:recipe_id', ( { params: { recipe_id } }, res ) => {
 app.use( ( req, res ) => {
   // for development, we serve from the webpack dev server
   const host = '//localhost:8888';
+  const location = createLocation( req.url );
 
-  const html = `
-    <!DOCTYPE html>
-    <html>
-      <head>
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+  match({ routes, location }, ( err, redirectLocation, renderProps ) => {
+    if ( err ) {
+      return res.status( 500 ).send( err.message );
+    } else if ( redirectLocation ) {
+      return res.redirect( 302, redirectLocation.pathname + redirectLocation.search );
+    } else if ( ! renderProps ) {
+      return res.status( 404 ).send( 'Not found' );
+    }
 
-        <title>Alfred Recipe App</title>
-      </head>
-      <body>
-        <div id="app"></div>
-        <script src="${host}/static/bundle.js"></script>
-      </body>
-    </html>
-  `;
+    const store = createStore();
+    const initialState = JSON.stringify( store.getState() );
 
-  res.status( 200 ).send( html );
+    // Note: Material-UI uses inline styles and adds vendor prefixing based on the user agent. If we
+    // do not do this little dirty hack to let it know what user agent we are expected, the inline
+    // styles sent to the client will not match the ones the browser generates, the DOM won't match,
+    // and react will have to re-render to the DOM, losing one of the key benefits of isomorophic
+    // apps. So for each request, we fake the user agent in node with the one from the client
+    // request.
+    global.navigator = { userAgent: req.headers[ 'user-agent' ] };
+
+    const innerHTML = renderToString(
+      <Provider store={store}>
+        <RouterContext {...renderProps} />
+      </Provider>
+    );
+
+    const html = `
+      <!DOCTYPE html>
+      <html>
+        <head>
+          <meta name="viewport" content="width=device-width, initial-scale=1">
+
+          <title>Alfred Recipe App</title>
+
+          <script type="text/javascript">
+            window.__INITIAL_STATE__ = ${initialState};
+          </script>
+        </head>
+        <body>
+          <div id="app">${innerHTML}</div>
+          <script src="${host}/static/bundle.js"></script>
+        </body>
+      </html>
+    `;
+
+    res.status( 200 ).send( html );
+  });
 });
 
 http.listen( 3000, () => console.log( 'API listening on port 3000' ) );

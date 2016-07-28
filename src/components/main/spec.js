@@ -13,7 +13,7 @@ test( 'Main', t => {
 
   const wrapper = shallow( <Main><p className="test" /></Main> );
   expected = true;
-  actual = wrapper.is( 'div' );
+  actual = wrapper.children().is( 'div' );
 
   t.ok( actual === expected, 'renders a div' );
 

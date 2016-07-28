@@ -12,9 +12,9 @@ import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
 import IconMenu from 'material-ui/IconMenu';
 import MenuItem from 'material-ui/MenuItem';
 
-import fetchRecipes from '../../../store/actions/fetch-recipes';
-import deleteRecipe from '../../../store/actions/delete-recipe';
-import { addRecipe } from '../../../store/actions/create-recipe';
+import fetchRecipes from '../../store/actions/fetch-recipes';
+import deleteRecipe from '../../store/actions/delete-recipe';
+import { addRecipe } from '../../store/actions/create-recipe';
 
 export class RecipeList extends React.Component {
   componentDidMount () {
