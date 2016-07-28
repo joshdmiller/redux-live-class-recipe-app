@@ -1,4 +1,5 @@
 import test from 'tape';
+import { fromJS } from 'immutable';
 import spyOn from '../../spy';
 
 import fetchRecipe from './fetch-recipe';
@@ -7,7 +8,7 @@ const testRecipe = { id: '1' };
 const spies = {
   getState () {
     return {
-      recipes: [ testRecipe, { id: '2', }, { id: '3' } ],
+      recipes: fromJS([ testRecipe, { id: '2', }, { id: '3' } ]),
     };
   },
 

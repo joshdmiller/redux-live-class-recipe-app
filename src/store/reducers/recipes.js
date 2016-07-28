@@ -7,7 +7,7 @@ export default ( recipes = List(), { type, ...payload } ) => {
     case 'LOAD_RECIPES':
       return fromJS( payload.payload );
     case 'DELETE_RECIPE':
-      return recipes.filterNot( recipe => recipe.id === payload.id );
+      return recipes.filterNot( recipe => recipe.get( 'id' ) === payload.id );
   }
 
   return recipes;

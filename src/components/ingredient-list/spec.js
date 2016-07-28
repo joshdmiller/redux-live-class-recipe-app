@@ -1,6 +1,7 @@
 import React from 'react';
 import test from 'tape';
 import { shallow } from 'enzyme';
+import { fromJS } from 'immutable';
 
 import IngredientList from './';
 import Ingredient from '../ingredient';
@@ -9,7 +10,7 @@ test( 'IngredientList', t => {
   let expected, actual;
   t.plan( 2 );
 
-  const ingredients = [
+  const ingredients = fromJS([
     {
       qty: 10,
       name: 'habanero chiles',
@@ -26,7 +27,7 @@ test( 'IngredientList', t => {
     {
       name: 'salt',
     },
-  ];
+  ]);
 
   const wrapper = shallow( <IngredientList ingredients={ingredients} /> );
 
