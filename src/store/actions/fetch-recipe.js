@@ -1,4 +1,30 @@
 import FetchPolyfill from 'whatwg-fetch';
+import data from '../../static-data';
+
+const getRecipe = id => {
+  if ( ! global.window ) {
+    // make internal API call, e.g. to db
+    return new Promise( ( resolve, reject ) => {
+      const recipe = data.recipes.find( recipe => recipe.id === id );
+
+      if ( ! recipe ) {
+        throw new Error();
+      }
+
+      resolve( recipe );
+    });
+  }
+
+  // In browser, fetch over the wire
+  return fetch( `http://localhost:3000/recipes/${id}` )
+    .then( res => {
+      if ( res.status < 200 || res.status >= 300 ) {
+        throw new Error();
+      }
+
+      return res.json();
+    });
+};
 
 export default id => ( dispatch, getState ) => {
   const recipes = getState().recipes;
@@ -11,14 +37,7 @@ export default id => ( dispatch, getState ) => {
 
   dispatch({ type: 'FETCH_RECIPE_START' });
 
-  return fetch( `http://localhost:3000/recipes/${id}` )
-    .then( res => {
-      if ( res.status < 200 || res.status >= 300 ) {
-        throw new Error();
-      }
-
-      return res.json();
-    })
+  return getRecipe( id )
     .then( recipe => {
       dispatch({
         type: 'ADD_RECIPE',

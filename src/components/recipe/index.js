@@ -7,7 +7,7 @@ import IngredientList from '../ingredient-list';
 
 export class Recipe extends React.Component {
   componentDidMount () {
-    this.props.fetch( this.props.params.id );
+    Recipe.fetch( this.props.dispatch, this.props.params );
   }
 
   render () {
@@ -26,15 +26,15 @@ export class Recipe extends React.Component {
       </div>
     );
   }
+
+  static fetch ( dispatch, params ) {
+    return dispatch( fetchRecipe( params.id ) );
+  }
 }
 
 const mapStateToProps = ({ recipes, }, { params: { id } }) => ({
   recipe: recipes.find( r => r.get( 'id' ) === id ) || Map(),
 });
 
-const mapDispatchToProps = dispatch => ({
-  fetch: id => dispatch( fetchRecipe( id ) ),
-});
-
-export default connect( mapStateToProps, mapDispatchToProps )( Recipe );
+export default connect( mapStateToProps )( Recipe );
 

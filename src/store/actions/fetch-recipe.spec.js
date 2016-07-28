@@ -23,6 +23,7 @@ const fetchSuccessSpy = spyOn( spies, 'fetchSuccess' );
 
 test( 'fetchRecipe action', t => {
   const _oldFetch = global.fetch;
+  const _oldWindow = global.window;
   global.fetch = spies.fetchSuccess;
 
   let actual, expected, thunkFn, id, result;
@@ -54,6 +55,7 @@ test( 'fetchRecipe action', t => {
   getStateSpy.reset();
   dispatchSpy.reset();
   fetchSuccessSpy.reset();
+  global.window = {};
 
   id = 'new-id';
   thunkFn = fetchRecipe( id );
@@ -81,7 +83,9 @@ test( 'fetchRecipe action', t => {
   t.equal( actual, expected, 'should fetch the recipe list' );
 
   // TODO: test that dispatch is called when the promise returns successfully and unsuccessfully
+  // TODO: test that our local API is called when running on the server
 
   global.fetch = _oldFetch;
+  global.window = _oldWindow;
 });
 

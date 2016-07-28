@@ -13,7 +13,7 @@ const logger = createLogger({
 const middleware = applyMiddleware(
   thunk,
   apiMiddleware,
-  logger
+  global.window ? logger : store => next => action => next( action )
 );
 
 export default () => {

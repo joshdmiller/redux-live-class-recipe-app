@@ -124,42 +124,57 @@ app.use( ( req, res ) => {
     }
 
     const store = createStore();
-    const initialState = JSON.stringify( store.getState() );
 
-    // Note: Material-UI uses inline styles and adds vendor prefixing based on the user agent. If we
-    // do not do this little dirty hack to let it know what user agent we are expected, the inline
-    // styles sent to the client will not match the ones the browser generates, the DOM won't match,
-    // and react will have to re-render to the DOM, losing one of the key benefits of isomorophic
-    // apps. So for each request, we fake the user agent in node with the one from the client
-    // request.
-    global.navigator = { userAgent: req.headers[ 'user-agent' ] };
+    let promises = renderProps.components
+      .filter( c => c )
+      .map( c => c.WrappedComponent ? c.WrappedComponent : c )
+      .filter( c => c.fetch )
+      .map( component => component.fetch( ( ...a ) => store.dispatch( ...a ), renderProps.params ) )
+      ;
 
-    const innerHTML = renderToString(
-      <Provider store={store}>
-        <RouterContext {...renderProps} />
-      </Provider>
-    );
+    Promise.all( promises )
+      .then( () => {
+        const initialState = JSON.stringify( store.getState() );
 
-    const html = `
-      <!DOCTYPE html>
-      <html>
-        <head>
-          <meta name="viewport" content="width=device-width, initial-scale=1">
+        // Note: Material-UI uses inline styles and adds vendor prefixing based on the user agent. If we
+        // do not do this little dirty hack to let it know what user agent we are expected, the inline
+        // styles sent to the client will not match the ones the browser generates, the DOM won't match,
+        // and react will have to re-render to the DOM, losing one of the key benefits of isomorophic
+        // apps. So for each request, we fake the user agent in node with the one from the client
+        // request.
+        global.navigator = { userAgent: req.headers[ 'user-agent' ] };
 
-          <title>Alfred Recipe App</title>
+        const innerHTML = renderToString(
+          <Provider store={store}>
+            <RouterContext {...renderProps} />
+          </Provider>
+        );
 
-          <script type="text/javascript">
-            window.__INITIAL_STATE__ = ${initialState};
-          </script>
-        </head>
-        <body>
-          <div id="app">${innerHTML}</div>
-          <script src="${host}/static/bundle.js"></script>
-        </body>
-      </html>
-    `;
+        const html = `
+          <!DOCTYPE html>
+          <html>
+            <head>
+              <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    res.status( 200 ).send( html );
+              <title>Alfred Recipe App</title>
+
+              <script type="text/javascript">
+                window.__INITIAL_STATE__ = ${initialState};
+              </script>
+            </head>
+            <body>
+              <div id="app">${innerHTML}</div>
+              <script src="${host}/static/bundle.js"></script>
+            </body>
+          </html>
+        `;
+
+        res.status( 200 ).send( html );
+      })
+
+      // Normally, you'd handle this error in a way that makes sense in your app.
+      .catch( e => res.status( 500 ).send( e.stack ) )
+      ;
   });
 });
 

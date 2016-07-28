@@ -18,7 +18,7 @@ import { addRecipe } from '../../store/actions/create-recipe';
 
 export class RecipeList extends React.Component {
   componentDidMount () {
-    this.props.refresh();
+    RecipeList.fetch( this.props.dispatch );
 
     this._socket = io( 'http://localhost:3000/' );
 
@@ -69,6 +69,10 @@ export class RecipeList extends React.Component {
       </List>
     );
   }
+
+  static fetch ( dispatch ) {
+    return dispatch( fetchRecipes() );
+  }
 }
 
 RecipeList.contextTypes = {
@@ -78,9 +82,9 @@ RecipeList.contextTypes = {
 const mapStateToProps = ({ recipes }) => ({ recipes });
 
 const mapDispatchToProps = dispatch => ({
-  refresh: () => dispatch( fetchRecipes() ),
   add: recipe => dispatch( addRecipe( recipe ) ),
   remove: id => dispatch( deleteRecipe( id ) ),
+  dispatch,
 });
 
 export default connect( mapStateToProps, mapDispatchToProps )( RecipeList );
