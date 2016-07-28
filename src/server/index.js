@@ -5,7 +5,7 @@ import bodyParser from 'body-parser';
 import cors from 'cors';
 import socketio from 'socket.io';
 
-import data from './src/static-data';
+import data from '../static-data';
 
 const reply = ( status, message ) => ({ status, message });
 
@@ -99,6 +99,28 @@ app.delete( '/recipes/:recipe_id', ( { params: { recipe_id } }, res ) => {
   res.status( 200 ).json( reply( 200, 'Recipe deleted' ) );
 
   // TODO: emit a change notification on the websocket
+});
+
+app.use( ( req, res ) => {
+  // for development, we serve from the webpack dev server
+  const host = '//localhost:8888';
+
+  const html = `
+    <!DOCTYPE html>
+    <html>
+      <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <title>Alfred Recipe App</title>
+      </head>
+      <body>
+        <div id="app"></div>
+        <script src="${host}/static/bundle.js"></script>
+      </body>
+    </html>
+  `;
+
+  res.status( 200 ).send( html );
 });
 
 http.listen( 3000, () => console.log( 'API listening on port 3000' ) );

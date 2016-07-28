@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Map } from 'immutable';
 
-import fetchRecipe from '../../store/actions/fetch-recipe';
+import fetchRecipe from '../../../store/actions/fetch-recipe';
 import IngredientList from '../ingredient-list';
 
 export class Recipe extends React.Component {

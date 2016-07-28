@@ -8,7 +8,7 @@ import { syncHistoryWithStore } from 'react-router-redux';
 import Main from '../main';
 import RecipeList from '../recipe-list';
 import Recipe from '../recipe';
-import store from '../../store';
+import store from '../../../store';
 
 // dirty hack because material-ui requires a custom event type
 // http://stackoverflow.com/a/34015469/988941
